@@ -1,16 +1,18 @@
 import {ListView} from "./ListView";
 import {Item} from "../index";
+import * as m from "mithril";
+import {Vnode} from "mithril";
 
 export class ItemListView extends ListView<Item>
 {
     getColumns():string[]
     {
-        return ["Serial", "Model", "Mod", "Type"];
+        return ["Serial", "Model", "Mods", "Type"];
     }
     
     getRowTemplate():(item:Item) => (number | string)[]
     {
-        return (item:Item) => [item.serial, item.itemDefinition && item.itemDefinition.name || "", "",( item.itemDefinition && item.itemDefinition.itemType && item.itemDefinition.itemType.name) || ""];
+        return (item:Item) => [item.serial, item.itemModel && item.itemModel.name || "", 0, item.itemModel && this.getItemType(item.itemModel.itemType) || ""];
     }
     
     getUrlPath():string
@@ -21,5 +23,10 @@ export class ItemListView extends ListView<Item>
     getTitle():string
     {
         return "Items";
+    }
+    
+    getControls():Vnode
+    {
+        return m(`a.button.level-item`, {onclick: this.handleLammiesButtonClick.bind(this), disabled: !this.selectedItems.length}, "Print Lammies");
     }
 }

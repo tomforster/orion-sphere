@@ -21,26 +21,31 @@ export interface DomainObject
 
 export interface Item extends DomainObject
 {
-    itemDefinition:ItemModel | undefined;
+    itemModel:ItemModel | undefined;
     serial:string;
 }
 
 export interface ItemModel extends DomainObject
 {
-    itemType:ItemType | undefined;
+    itemType:string | undefined;
     name:string;
+    baseCost:number;
 }
 
-export interface ItemType extends DomainObject
+export interface ItemType
 {
+    key:string;
     name:string;
 }
 
 (async function init()
 {
+    const itemTypePromise = m.request({url:"http://localhost:3000/item-type", method:"get"})
+        .then(res => res as ItemType[]);
+    
     m.route(document.getElementById("content") as Element, "/models/1", {
-        "/models/:key": new ItemModelListView(),
-        "/items/:key": new ItemListView(),
+        "/models/:key": new ItemModelListView(itemTypePromise),
+        "/items/:key": new ItemListView(itemTypePromise),
     });
     
     m.render(document.getElementById("nav") as Element, m(".navbar-brand", [

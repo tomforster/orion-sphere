@@ -1,6 +1,6 @@
 import {Children, ClassComponent, Vnode} from "mithril";
 import * as m from "mithril";
-import {DomainObject, Page} from "../index";
+import {DomainObject, ItemType, Page} from "../index";
 
 export abstract class ListView<T extends DomainObject> implements ClassComponent
 {
@@ -8,14 +8,32 @@ export abstract class ListView<T extends DomainObject> implements ClassComponent
     loaded:boolean = false;
     pageable:any = {};
     selectedItems:any[] = [];
+    itemTypePromise:Promise<ItemType[]>;
+    itemTypes:ItemType[] | undefined;
+    
+    constructor(itemTypePromise:Promise<ItemType[]>)
+    {
+        this.itemTypePromise = itemTypePromise;
+    }
     
     async fetch()
     {
+        this.itemTypes = await this.itemTypePromise;
         this.page = await m.request<Page<T>>({
             method: "get",
             url: this.getUrl() + "?page=" + this.pageable.page + "&size=50"
         });
         this.loaded = true;
+    }
+    
+    protected getItemType(key:string | undefined):string
+    {
+        if(this.itemTypes && key)
+        {
+            const itemType = this.itemTypes.find(itemType => itemType.key === key);
+            if(itemType) return itemType.name;
+        }
+        return "";
     }
     
     selectRow(item:any)
@@ -57,6 +75,11 @@ export abstract class ListView<T extends DomainObject> implements ClassComponent
     
     abstract getTitle():string;
     
+    getControls():Vnode
+    {
+        return m("");
+    }
+    
     oninit(vnode:Vnode):any
     {
         this.pageable.page = (vnode.attrs as any).key - 1;
@@ -72,12 +95,12 @@ export abstract class ListView<T extends DomainObject> implements ClassComponent
     {
         if(this.page)
         {
-            const controls = m(".level",
+            const titleBar = m(".level",
                 m(".level-left", m("h1.subtitle", this.getTitle())),
-                m(".level-right", m(`a.button.level-item`, {onclick: this.handleLammiesButtonClick.bind(this), disabled: !this.selectedItems.length}, "Print Lammies")));
+                m(".level-right", this.getControls()));
             
             const filters = m(".box", m(".field", [
-                m('.control', m("input.input[type='text']", {placeholder: 'Filter by definition name or serial'}))
+                m('.control', m("input.input[type='text']", {placeholder: 'Type to filter...'}))
             ]));
             
             const paging = m(".level",
@@ -96,7 +119,7 @@ export abstract class ListView<T extends DomainObject> implements ClassComponent
                             m("td", m("input[type='checkbox']", {checked: this.isSelected(r)})),
                             ...this.getRowTemplate()(r).map((t:any) => m("td", t))]))));
             
-            return m(".container", controls, filters, table, paging);
+            return m(".container", titleBar, filters, table, paging);
         }
         
         return m(".container");

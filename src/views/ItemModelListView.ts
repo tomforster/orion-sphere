@@ -10,12 +10,12 @@ export class ItemModelListView extends ListView<ItemModel>
     
     getRowTemplate():(item:ItemModel) => (number | string)[]
     {
-        return (item:ItemModel) => [item.itemType && item.itemType.name || "", item.name, ""];
+        return (item:ItemModel) => [this.getItemType(item.itemType) || "", item.name, item.baseCost];
     }
     
     getUrlPath():string
     {
-        return "item-definition";
+        return "item-model";
     }
     
     getTitle():string
