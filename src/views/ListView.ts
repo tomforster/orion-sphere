@@ -56,12 +56,6 @@ export abstract class ListView<T extends DomainObject> implements ClassComponent
         return index > -1;
     }
     
-    async handleLammiesButtonClick()
-    {
-        console.log("lammies", this.selectedItems);
-        await m.request("http://localhost:3000/lammies", {method: "post", data: this.selectedItems.map(i => i.id)});
-    }
-    
     abstract getColumns():string[];
     
     abstract getRowTemplate():(item:T) => (number | string)[];
@@ -104,8 +98,8 @@ export abstract class ListView<T extends DomainObject> implements ClassComponent
             ]));
             
             const paging = m(".level",
-                m(".level-left", m(`a.button.level-item[href=/${this.getUrl()}/${this.page.number}]`, {oncreate: m.route.link, disabled: this.page.first}, "Previous")),
-                m(".level-right", m(`a.button.level-item[href=/${this.getUrl()}/${this.page.number+2}]`, {oncreate: m.route.link, disabled: this.page.last}, "Next")));
+                m(".level-left", m(`a.button.level-item[href=/${this.getUrlPath()}/${this.page.number}]`, {oncreate: m.route.link, disabled: this.page.first}, "Previous")),
+                m(".level-right", m(`a.button.level-item[href=/${this.getUrlPath()}/${this.page.number+2}]`, {oncreate: m.route.link, disabled: this.page.last}, "Next")));
             
             const table = m("table.table.is-fullwidth.is-narrow",
                 m("thead", m("tr", [m("th"), ...this.getColumns().map(h => m("th", h))])),

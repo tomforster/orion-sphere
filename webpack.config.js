@@ -1,3 +1,5 @@
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+
 module.exports = {
     mode: "development",
     devtool: "inline-source-map",
@@ -32,5 +34,8 @@ module.exports = {
                 }]
             }
         ]
-    }
-}
+    },
+    plugins: [
+        new CopyWebpackPlugin(["./index.html"])
+    ]
+};
