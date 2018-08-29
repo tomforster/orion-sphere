@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        *
+        {
+            box-sizing: border-box;
+        }
+
+        body
+        {
+            margin: 0;
+            font-family: monospace;
+        }
+
+        .lammie
+        {
+            display:flex;
+            flex-direction: column;
+            width:300px;
+            height:180px;
+
+            border: solid 2px black;
+
+            margin: 5px;
+
+            padding: 3px;
+
+            /*justify-content: stretch;*/
+            /*align-items: stretch;*/
+        }
+
+        .lammie-back .lammie-body
+        {
+            flex-direction: row;
+            justify-content: flex-end;
+        }
+
+        .lammie-body
+        {
+            display: flex;
+            flex: 1 0;
+            overflow: hidden;
+        }
+
+        .lammie-text
+        {
+            flex: 1 0;
+            overflow: hidden;
+            margin: 3px;
+        }
+
+        .lammie-header
+        {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px;
+            border: 2px solid black;
+            margin: 3px;
+            flex: auto 0;
+        }
+
+        .lammie-qr
+        {
+            /*border: 2px solid black;*/
+            width: 70px;
+            height: 70px;
+            margin: 3px;
+            /*min-width: 100px;*/
+        }
+
+        .lammie-qr-container
+        {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+    </style>
+</head>
+<body>
+    <div class="lammie lammie-front">
+        <div class="lammie-header">
+            <div class="lammie-title">Test Item 1234</div>
+            <div class="lammie-id">MW0001-0001</div>
+        </div>
+        <div class="lammie-body">
+            <div class="lammie-text">
+                <div>Charges: 3</div>
+                <div>Base Cost: 300</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="lammie lammie-back">
+        <div class="lammie-header">
+            <div class="lammie-title">Test Item 1234</div>
+            <div class="lammie-id">MW0001-0001</div>
+        </div>
+        <div class="lammie-body">
+            <div class="lammie-text">
+                Mods:
+            </div>
+            <div class="lammie-qr-container">
+                <div id="qr" class="lammie-qr"></div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/04f46c6a/qrcode.min.js"></script>
+    <script type="text/javascript">
+        var qrcode = new QRCode(document.getElementById("qr"), {
+            text: "MW0001-0001",
+            width: 70,
+            height: 70,
+            colorDark : "#000000",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.H
+        });
+    </script>
+</body>
+</html>
