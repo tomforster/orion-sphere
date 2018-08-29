@@ -31,8 +31,15 @@
             /*align-items: stretch;*/
         }
 
+        .lammie-back .lammie-body
+        {
+            flex-direction: row;
+            justify-content: flex-end;
+        }
+
         .lammie-body
         {
+            display: flex;
             flex: 1 0;
             overflow: hidden;
         }
@@ -64,6 +71,13 @@
             margin: 3px;
             /*min-width: 100px;*/
         }
+
+        .lammie-qr-container
+        {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
     </style>
 </head>
 <body>
@@ -86,7 +100,12 @@
             <div class="lammie-id">MW0001-0001</div>
         </div>
         <div class="lammie-body">
-            <div id="qr" class="lammie-qr"></div>
+            <div class="lammie-text">
+                Mods:
+            </div>
+            <div class="lammie-qr-container">
+                <div id="qr" class="lammie-qr"></div>
+            </div>
         </div>
     </div>
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/04f46c6a/qrcode.min.js"></script>
