@@ -48,7 +48,7 @@ export interface Mod extends DomainObject
 
 (async function init()
 {
-    const itemTypePromise = m.request({url:"http://localhost:3000/item-type", method:"get"})
+    const itemTypePromise = m.request({url:"/item-type", method:"get"})
         .then(res => res as ItemType[]);
     
     m.route(document.getElementById("content") as Element, "/item-model/1", {

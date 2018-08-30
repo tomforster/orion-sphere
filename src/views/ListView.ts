@@ -62,7 +62,7 @@ export abstract class ListView<T extends DomainObject> implements ClassComponent
     
     getUrl():string
     {
-        return "http://localhost:3000/" + this.getUrlPath();
+        return "/" + this.getUrlPath();
     }
     
     abstract getUrlPath():string;
